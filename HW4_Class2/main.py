@@ -3,7 +3,8 @@ import keyword
 
 
 class OpenDictForAttributes:
-    """ Create dynamic attributes from dictionary, including the sub-dictionary cases in values """
+    """ Create dynamic attributes from dictionary,
+    including the sub-dictionary cases in values """
     def __init__(self, attr_dict: dict):
         for key, value in attr_dict.items():
             if keyword.iskeyword(key):
@@ -17,7 +18,8 @@ class OpenDictForAttributes:
 class ColorizeMixin:
     """ Change the color of the final text of the class """
     def __repr__(self):
-        return f'\033[1;{self.repr_color_code};40m {self.title} | {self.price} ₽ \n'
+        return f'\033[1;{self.repr_color_code};' \
+               f'40m {self.title} | {self.price} ₽ \n'
 
 
 class Advert(ColorizeMixin, OpenDictForAttributes):
@@ -43,7 +45,6 @@ class Advert(ColorizeMixin, OpenDictForAttributes):
             return ColorizeMixin.__repr__(self)
         else:
             return f'{self.title} | {self.price} ₽'
-    pass
 
 
 if __name__ == '__main__':
@@ -58,19 +59,19 @@ if __name__ == '__main__':
     lesson = json.loads(lesson_str)
     lesson_ad = Advert(lesson)
     assert lesson_ad.location.address == 'город Москва, Лесная, 7'
-    # print(lesson_ad.price)
-    # print(lesson_ad)
+    assert lesson_ad.price == 200
+    print(lesson_ad)
 
     lesson2_str = """{
                     "title": "Вельш-корги",
                     "price": 1000,
                     "class": "dogs",
                     "location": {
-                    "address": "сельское поселение Ельдигинское, поселок санатория Тишково, 25"
+                    "address": 
+                    "сельское поселение Ельдигинское, поселок санатория Тишково, 25"
                     }
     }"""
     lesson2 = json.loads(lesson2_str)
     lesson2_ad = Advert(lesson2)
     assert lesson2_ad.class_ == 'dogs'
     print(lesson2_ad)
-    
